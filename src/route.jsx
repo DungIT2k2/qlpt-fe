@@ -1,28 +1,42 @@
-import {
-    Routes,
-    Route
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-import Login from '../src/components/Login/index';
+import Login from "../src/components/Login/index";
+import { Box, Typography } from '@mui/material';
+import { green } from '@mui/material/colors';
+import AdminPage from "./components/Home/Admin";
 
+const primary = green[500];
 
 function PageNotFound() {
-    return (
-        <div>
-            404. Not Found Data With URL
-        </div>
-    )
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        backgroundColor: primary,
+      }}
+    >
+      <Typography variant="h1" style={{ color: 'white' }}>
+        404 Not Found
+      </Typography>
+    </Box>
+  )
 }
 
-function Route() {
-    return (
-        <>
-            <Routes>
-                <Route path='/' element={<Login />}>
+function Layout() {
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Login />}>
 
-                </Route>
-
-            </Routes>
-        </>
-    )
+        </Route>
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path='*' element={<PageNotFound />} />
+      </Routes>
+    </>
+  );
 }
+
+export default Layout;
