@@ -1,5 +1,12 @@
+.header-comtainer{
+    margin-left: 28px;
+    margin-top: 14px;
+
+}
+
 .menu-container{
-    height: 100vh;
+    height: 100%;
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
