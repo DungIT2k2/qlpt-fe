@@ -1,0 +1,21 @@
+.header-content {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.body-content {
+    width: 100%;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-add{
+    margin: 24px 40%;
+    display: flex;
+    flex-direction: column;
+}

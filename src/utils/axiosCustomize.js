@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from 'js-cookie'
 // import dotenv from "dotenv";
 
 const instance = axios.create({
@@ -8,6 +9,10 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
+    const token = Cookies.get('Auth-Token');
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
     // Do something before request is sent
     return config;
   },

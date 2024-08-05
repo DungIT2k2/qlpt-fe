@@ -3,20 +3,28 @@ import { TextField, Button, Typography } from "@mui/material";
 import "./login.css";
 import { postLogin } from "../../services/apiServices";
 import { decodeToken } from "../../utils/common";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await postLogin(username, password);
     if (result && result.status === 200) {
       const token = result.data.accessToken;
+      Cookies.set('Auth-Token', token);
       const data = decodeToken(token);
-      console.log(data);
+      if (data.role === "Manage"){
+        navigate('/admin');
+      }
+      else{
+        navigate('/user')
+      }
     }
-    console.log(result);
   };
 
   return (

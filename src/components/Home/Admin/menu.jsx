@@ -1,19 +1,48 @@
 import Button from "@mui/material/Button";
 import "../common.css";
 import { Typography } from "@mui/material";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { decodeToken } from "../../../utils/common";
+
 const MenuAdmin = () => {
+  const [dataUser, setDataUser] = useState({});
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Cookies.remove('Auth-Token');
+    navigate('/');
+  }
+
+  const getDataUser = (token) => {
+    const data = decodeToken(token);
+    setDataUser(data)
+    console.log(1);
+  }
+
+  useEffect(() => {
+    const token = Cookies.get('Auth-Token');
+    if (!token) {
+      navigate('/');
+    }
+    else {
+      getDataUser(token);
+    }
+  }, []);
+
   return (
     <>
-      <div className="header-comtainer">
+      <div className="header-container">
         <Typography
           sx={{
             fontWeight: "bold",
           }}
           variant="h5"
         >
-          Xin chào, ...
+          Xin chào, {dataUser.name}
         </Typography>
-        <Button variant="contained">Đăng Xuất</Button>
+        <Button variant="contained" onClick={handleLogout}>Đăng Xuất</Button>
       </div>
       <div className="menu-container">
         <Typography
@@ -38,6 +67,7 @@ const MenuAdmin = () => {
             },
           }}
           variant="contained"
+          onClick={()=> {navigate('/admin/room')}}
         >
           Quản lí phòng
         </Button>
