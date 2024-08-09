@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { useState, forwardRef } from 'react';
 import { createNewRoom } from '../../services/apiServices';
+import { toast } from 'react-toastify';
+
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -29,15 +31,28 @@ export default function ModelRoom(props) {
     };
 
     const handleCreate = async () => {
-        const result = await createNewRoom(name, owner, status);
-        console.log(result);
-        if (result && result.status == 200){
-            //continue
+        try {
+            const result = await createNewRoom(name, owner, status);
+
+            if (result && result.status === 200) {
+                toast.success(result.data.message, { position: "top-right"});
+                console.log(result);
+            }
+            if (result && result.status === 500) {
+                toast.error(result.data.message, { position: "top-right"});
+            }
+            setName('');
+            setStatus('uncheck');
+            setOwner('');
+            onClose();
+        } catch (error) {
+            toast.error('Tạo phòng mới không thành công', { position: "top-right"});
+            setName('');
+            setStatus('uncheck');
+            setOwner('');
+            onClose();
         }
-        setName('');
-        setStatus('uncheck');
-        setOwner('');
-        onClose();
+
     }
 
     return (

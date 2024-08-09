@@ -12,6 +12,8 @@ import AddUtilities from "./components/Utilities/add";
 import MenuAdmin from "./components/Home/Admin/menu";
 import PaymentPage from "./components/Payment";
 import AccountPage from "./components/Account";
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const primary = green[500];
 
@@ -51,6 +53,19 @@ function Layout() {
         <Route path="user" element={<UserPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </>
   );
 }
