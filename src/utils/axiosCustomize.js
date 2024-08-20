@@ -1,9 +1,8 @@
 import axios from "axios";
 import Cookies from 'js-cookie'
-// import dotenv from "dotenv";
 
 const instance = axios.create({
-  baseURL: process.env.BASE_URL || "http://localhost:5000/",
+  baseURL: process.env.BASE_URL || 'https://qlpt-be.vercel.app/' || "http://localhost:5000/",
 });
 
 // Add a request interceptor

@@ -38,9 +38,11 @@ export default function ModelRoom(props) {
                 toast.success(result.data.message, { position: "top-right"});
                 console.log(result);
             }
+
             if (result && result.status === 500) {
                 toast.error(result.data.message, { position: "top-right"});
             }
+
             setName('');
             setStatus('uncheck');
             setOwner('');
@@ -52,7 +54,6 @@ export default function ModelRoom(props) {
             setOwner('');
             onClose();
         }
-
     }
 
     return (
