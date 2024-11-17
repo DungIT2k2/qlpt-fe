@@ -9,7 +9,26 @@ const getDataRoom = () => {
 }
 
 const createNewRoom = (name, owner, status) => {
-  return axios.post('room/create', { name, owner, status})
+  return axios.post('room/create', { name, owner, status })
 }
 
-export { postLogin, getDataRoom, createNewRoom };
+const getRoom = (id) => {
+  return axios.post('room/get', { id });
+}
+
+const updateRoom = (id, name, owner, status) => {
+  return axios.put('room/update', {
+    id, dataUpdate: {
+      name,
+      owner,
+      status
+    }
+  });
+}
+
+const getDataBill = (month, year) => {
+  return axios.post('user/checkpayment', { month, year });
+}
+
+
+export { postLogin, getDataRoom, createNewRoom, getRoom, updateRoom, getDataBill };

@@ -1,12 +1,12 @@
 import Button from "@mui/material/Button";
-import "../common.css";
+import '../common.css';
 import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { decodeToken } from "../../../utils/common";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { decodeToken } from "../../../utils/common";
 
-const MenuAdmin = () => {
+const MenuUser = () => {
   const [dataUser, setDataUser] = useState({});
   const navigate = useNavigate();
 
@@ -15,18 +15,13 @@ const MenuAdmin = () => {
     navigate('/');
   }
 
-  const getDataUser = (token) => {
-    const data = decodeToken(token);
-    setDataUser(data)
-  }
-
   useEffect(() => {
     const token = Cookies.get('Auth-Token');
-    if (!token) {
-      navigate('/');
-    }
-    else {
-      getDataUser(token);
+    const data = decodeToken(token);
+    if (data.role == "Manage") {
+      navigate('/admin');
+    } else {
+      setDataUser(data)
     }
   }, []);
 
@@ -51,7 +46,7 @@ const MenuAdmin = () => {
           }}
           variant="h3"
         >
-          Menu Quản Lí Phòng Trọ
+          Thông tin {dataUser.room}
         </Typography>
         <Button
           sx={{
@@ -66,9 +61,9 @@ const MenuAdmin = () => {
             },
           }}
           variant="contained"
-          onClick={()=> {navigate('/admin/room')}}
+          onClick={() => {navigate('bill');}}
         >
-          Quản lí phòng
+          Xem hóa đơn tiện ích
         </Button>
         <Button
           sx={{
@@ -84,58 +79,11 @@ const MenuAdmin = () => {
           }}
           variant="contained"
         >
-          Thêm điện, nước tháng mới
-        </Button>
-        <Button
-          sx={{
-            marginBottom: "20px",
-            padding: "16px",
-            width: "400px",
-            fontWeight: "bold",
-            fontSize: "20px",
-            backgroundColor: "rgb(0, 169, 0)",
-            "&:hover": {
-              backgroundColor: "rgb(0, 129, 0)",
-            },
-          }}
-          variant="contained"
-        >
-          Quản lí tiện ích
-        </Button>
-        <Button
-          sx={{
-            marginBottom: "20px",
-            padding: "16px",
-            width: "400px",
-            fontWeight: "bold",
-            fontSize: "20px",
-            backgroundColor: "rgb(0, 169, 0)",
-            "&:hover": {
-              backgroundColor: "rgb(0, 129, 0)",
-            },
-          }}
-          variant="contained"
-        >
-          Quản Lí Thanh Toán
-        </Button>
-        <Button
-          sx={{
-            padding: "16px",
-            width: "400px",
-            fontWeight: "bold",
-            fontSize: "20px",
-            backgroundColor: "rgb(0, 169, 0)",
-            "&:hover": {
-              backgroundColor: "rgb(0, 129, 0)",
-            },
-          }}
-          variant="contained"
-        >
-          Quản lí Tài Khoản
+          Góp ý
         </Button>
       </div>
     </>
   );
 };
 
-export default MenuAdmin;
+export default MenuUser;

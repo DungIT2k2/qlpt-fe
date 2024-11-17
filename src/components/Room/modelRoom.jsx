@@ -10,9 +10,8 @@ import TextField from '@mui/material/TextField';
 import Slide from '@mui/material/Slide';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import { useState, forwardRef } from 'react';
-import { createNewRoom } from '../../services/apiServices';
+import { useState, forwardRef, useEffect, useCallback } from 'react';
+import { createNewRoom, getRoom, updateRoom } from '../../services/apiServices';
 import { toast } from 'react-toastify';
 
 
@@ -21,7 +20,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 export default function ModelRoom(props) {
-    const { open, onClose } = props;
+    const { open, type, id, onClose, reFectch } = props;
     const [status, setStatus] = useState('uncheck');
     const [name, setName] = useState('');
     const [owner, setOwner] = useState('');
@@ -30,17 +29,31 @@ export default function ModelRoom(props) {
         setStatus(event.target.value);
     };
 
+    useEffect(() => {
+        fetchDataRoom(id);
+    }, [id]);
+
+    const fetchDataRoom = async (id) => {
+        const result = await getRoom(id);
+        if (result && result.status == 200) {
+            const res = result.data?.data;
+            setName(res?.name);
+            setOwner(res?.owner);
+            setStatus(res?.status);
+        }
+    }
+
     const handleCreate = async () => {
         try {
             const result = await createNewRoom(name, owner, status);
 
             if (result && result.status === 200) {
-                toast.success(result.data.message, { position: "top-right"});
+                toast.success(result.data.message, { position: "top-right" });
                 console.log(result);
             }
 
             if (result && result.status === 500) {
-                toast.error(result.data.message, { position: "top-right"});
+                toast.error(result.data.message, { position: "top-right" });
             }
 
             setName('');
@@ -48,11 +61,31 @@ export default function ModelRoom(props) {
             setOwner('');
             onClose();
         } catch (error) {
-            toast.error('Tạo phòng mới không thành công', { position: "top-right"});
+            toast.error('Tạo phòng mới không thành công', { position: "top-right" });
             setName('');
             setStatus('uncheck');
             setOwner('');
             onClose();
+        }
+    }
+
+    const handleUpdate = async () => {
+        try {
+            const result = await updateRoom(id, name, owner, status);
+            console.log(result);
+            const data = result?.data;
+            console.log(data);
+            if (result && result.status === 200) {
+                toast.success(data.message, { position: "top-right" });
+            }
+
+            if (result && result.status === 500) {
+                toast.error(data.message, { position: "top-right" });
+            }
+            reFectch();
+            onClose();
+        } catch (error) {
+            toast.error('Tạo phòng mới không thành công', { position: "top-right" });
         }
     }
 
@@ -75,11 +108,16 @@ export default function ModelRoom(props) {
                             <CloseIcon />
                         </IconButton>
                         <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                            Thêm Phòng Mới
+                            {type == "Add" ? "Thêm Phòng Mới" : "Sửa thông tin phòng"}
                         </Typography>
-                        <Button autoFocus color="inherit" onClick={handleCreate}>
-                            Lưu
-                        </Button>
+                        {
+                            type == "Add" ? (<Button autoFocus color="inherit" onClick={handleCreate}>
+                                Lưu
+                            </Button>) :
+                                (<Button autoFocus color="inherit" onClick={handleUpdate}>
+                                    Lưu
+                                </Button>)
+                        }
                     </Toolbar>
                 </AppBar>
                 <div className='form-add'>
@@ -106,7 +144,7 @@ export default function ModelRoom(props) {
                         onChange={handleChange}
                     >
                         <MenuItem value="uncheck">Còn Trống</MenuItem>
-                        <MenuItem value="check">Đã Cho Thuê</MenuItem>
+                        <MenuItem value="checked">Đã Cho Thuê</MenuItem>
                     </Select>
                 </div>
 

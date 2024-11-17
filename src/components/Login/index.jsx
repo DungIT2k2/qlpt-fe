@@ -13,7 +13,7 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await postLogin(username, password);
+    const result = await postLogin(username.trim(), password);
     if (result && result.status === 200) {
       const token = result.data.accessToken;
       Cookies.set('Auth-Token', token);

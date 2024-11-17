@@ -14,6 +14,8 @@ import PaymentPage from "./components/Payment";
 import AccountPage from "./components/Account";
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MenuUser from "./components/Home/User/menu";
+import BillPage from "./components/Home/User/bill";
 
 const primary = green[500];
 
@@ -50,7 +52,10 @@ function Layout() {
           <Route path="payment" element={<PaymentPage />} />
           <Route path="account" element={<AccountPage />} />
         </Route>
-        <Route path="user" element={<UserPage />} />
+        <Route path="user" element={<UserPage />} >
+          <Route index element={<MenuUser />} />
+          <Route path="bill" element={<BillPage />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer

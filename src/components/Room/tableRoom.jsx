@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
 import { getDataRoom } from '../../services/apiServices';
 import { Button } from '@mui/material';
+import ModelRoom from './modelRoom';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -120,10 +121,23 @@ export default function TableRoom() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rows, setRows] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [id, setId] = useState("");
+    const [reFetch, setReFectch] = useState(true);
+
+    const handleClickOpen = (id) => {
+        setId(id);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setId("");
+    }
 
     useEffect(() => {
-        fetchDataRoom();   
-    }, []);
+        fetchDataRoom();
+    }, [reFetch]);
 
     const fetchDataRoom = async () => {
         const result = await getDataRoom();
@@ -237,7 +251,7 @@ export default function TableRoom() {
                                             <TableCell align="right">{row.owner}</TableCell>
                                             <TableCell align="right">{row.status === "checked" ? "Đã cho thuê" : "Còn trống"}</TableCell>
                                             <TableCell align="right">
-                                                <Button variant='contained'>Sửa</Button>
+                                                <Button variant='contained' onClick={() => handleClickOpen(row._id)}>Sửa</Button>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -256,6 +270,7 @@ export default function TableRoom() {
                     />
                 </Paper>
             </Box>
+            <ModelRoom open={open} type={"Update"} id={id} onClose={handleClose} reFectch={() => setReFectch(!reFetch)}/>
         </div>
     );
 }

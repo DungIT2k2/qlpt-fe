@@ -39,7 +39,7 @@ const RoomPage = () => {
                     <TableRoom />
                 </div>
             </div>
-            <ModelRoom open={open} onClose={handleClose}/>
+            <ModelRoom open={open} type={"Add"} onClose={handleClose}/>
         </>
     )
 }
